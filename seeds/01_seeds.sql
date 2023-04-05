@@ -15,7 +15,7 @@ INSERT INTO reservations (start_date, end_date, property_id, guest_id)
   ('2023-09-04', '2023-10-31', 3, 4),
   ('2023-03-04', '2023-04-03', 2, 1);
 
-INSERT INTO property_reviews (reservation_id, rating, message)
-  VALUES (1, 6.5, 'It was messy and had a smell. But the view was nice, and a big patio. Good for party.'),
-  (2, 8.5, 'Beautiful scenery as described. Loses 1 point for being full of ninjas trying to kill me.'),
-  (3,  3.5, 'Bad energy, not good for meditation.');
+INSERT INTO property_reviews (guest_id, property_id, reservation_id, rating, message)
+  VALUES (3, 2, 1, 6.5, 'It was messy and had a smell. But the view was nice, and a big patio. Good for party.'),
+  (4, 3, 2, 8.5, 'Beautiful scenery as described. Loses 1 point for being full of ninjas trying to kill me.'),
+  (1, 2, 3, 3.5, 'Bad energy, not good for meditation.');
