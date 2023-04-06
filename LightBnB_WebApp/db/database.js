@@ -28,14 +28,6 @@ const getUserWithEmail = function(email) {
       return null;
     });
 
-  // let resolvedUser = null;
-  // for (const userId in users) {
-  //   const user = users[userId];
-  //   if (user?.email.toLowerCase() === email?.toLowerCase()) {
-  //     resolvedUser = user;
-  //   }
-  // }
-  // return Promise.resolve(resolvedUser);
 };
 
 /**
@@ -55,8 +47,6 @@ const getUserWithId = function(id) {
     .catch(err => {
       return null;
     });
-
-  // return Promise.resolve(users[id]);
 };
 
 /**
@@ -76,11 +66,6 @@ const addUser = function(user) {
     .catch(err => {
       console.log(err);
     });
-
-  // const userId = Object.keys(users).length + 1;
-  // user.id = userId;
-  // users[userId] = user;
-  // return Promise.resolve(user);
 };
 
 /// Reservations
@@ -91,7 +76,25 @@ const addUser = function(user) {
  * @return {Promise<[{}]>} A promise to the reservations.
  */
 const getAllReservations = function(guest_id, limit = 10) {
-  return getAllProperties(null, 2);
+
+  const query = `SELECT reservations.*, properties.*, AVG(property_reviews.rating) as average_rating
+                  FROM reservations
+                  JOIN properties ON reservations.property_id = properties.id
+                  JOIN property_reviews ON properties.id = property_reviews.property_id
+                  WHERE reservations.guest_id = $1
+                  GROUP BY reservations.id, properties.id
+                  ORDER BY reservations.start_date
+                  LIMIT $2;`;
+
+  return pool
+    .query(query, [guest_id, limit])
+    .then(result => {
+      return result.rows;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
 };
 
 /// Properties
